@@ -6,7 +6,7 @@
 #    By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/03 15:53:36 by fgeslin           #+#    #+#              #
-#    Updated: 2023/01/03 16:15:21 by fgeslin          ###   ########.fr        #
+#    Updated: 2023/01/05 15:51:29 by fgeslin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ CFLAGS		= -Wall -Wextra -Werror
 
 #####	SOURCES		############################################################
 SRC			=	src/push_swap.c \
-				src/manips.c
+				src/push_swap_utils.c \
+				src/sorting.c
 SRC_BONUS	=	
 OBJ			= $(SRC:.c=.o)
 OBJ_BONUS	= $(SRC_BONUS:.c=.o)

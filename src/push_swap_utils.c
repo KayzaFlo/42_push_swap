@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   manips.c                                           :+:      :+:    :+:   */
+/*   push_swap_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:03:44 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/05 14:00:17 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/05 16:01:20 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	swap(t_list **lst)
 {
-	t_list *temp;
+	t_list	*temp;
 
 	if (!lst)
 		exit (-1);
@@ -29,7 +29,7 @@ void	swap(t_list **lst)
 
 void	push(t_list **from, t_list **to)
 {
-	t_list *temp;
+	t_list	*temp;
 
 	if (!from || !to)
 		exit (-1);
@@ -42,7 +42,7 @@ void	push(t_list **from, t_list **to)
 
 void	rotate(t_list **lst)
 {
-	t_list *temp;
+	t_list	*temp;
 
 	if (!lst)
 		exit (-1);
@@ -55,8 +55,8 @@ void	rotate(t_list **lst)
 
 void	r_rotate(t_list **lst)
 {
-	t_list *temp;
-	t_list *newlast;
+	t_list	*temp;
+	t_list	*newlast;
 
 	if (!lst)
 		exit (-1);
