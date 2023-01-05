@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:43:24 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/05 14:44:08 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/05 15:37:40 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static void debugprint(t_list **a, t_list **b, char *f)
 {
-	printf("------\n");
+	// printf("------\n");
+	printf("%s\n", f);
 	if (f[0] == 's')
 	{
 		if (f[1] == 'a' || f[1] == 's')
@@ -53,23 +54,28 @@ static void debugprint(t_list **a, t_list **b, char *f)
 			}
 		}
 	}
-	printf("Exec '%s':\n", f);
+	// printf("Exec '%s':\n", f);
 	while (*a || *b)
 	{
 		if (*a)
 		{
-			printf("%d", *(int *)(*a)->content);
+			// printf("%d", *(int *)(*a)->content);
 			a = &(*a)->next;
 		}
-		printf("\t");
+		// printf("\t");
 		if (*b)
 		{
-			printf("%d", *(int *)(*b)->content);
+			// printf("%d", *(int *)(*b)->content);
 			b = &(*b)->next;
 		}
-		printf("\n");
+		// printf("\n");
 	}
-	printf("-\t-\na\tb\n");
+	// printf("-\t-\na\tb\n");
+}
+
+static void	del_content(void *param)
+{
+	free(param);
 }
 
 int main(int argc, char const *argv[])
@@ -94,16 +100,21 @@ int main(int argc, char const *argv[])
 		if (!n)
 			return (-1);
 		*n = ft_atoi(args[i]);
+		free(args[i]);
 		ft_lstadd_back(&stack_a, ft_lstnew((void *)n));
 	}
+	free(args);
+	// debugprint(&stack_a, &stack_b, 0);
 	debugprint(&stack_a, &stack_b, "sa");
 	debugprint(&stack_a, &stack_b, "pb");
 	debugprint(&stack_a, &stack_b, "pb");
 	debugprint(&stack_a, &stack_b, "pb");
-	debugprint(&stack_a, &stack_b, "rr");
-	debugprint(&stack_a, &stack_b, "rrr");
+	// debugprint(&stack_a, &stack_b, "rr");
+	// debugprint(&stack_a, &stack_b, "rrr");
 	debugprint(&stack_a, &stack_b, "sa");
 	debugprint(&stack_a, &stack_b, "pa");
 	debugprint(&stack_a, &stack_b, "pa");
 	debugprint(&stack_a, &stack_b, "pa");
+	ft_lstclear(&stack_a, del_content);
+	ft_lstclear(&stack_b, del_content);
 }
