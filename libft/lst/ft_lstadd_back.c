@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:58:15 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/03 13:03:10 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/05 13:54:06 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
+	if (!new)
+		return ;
+	new->next = NULL;
 	if (!*lst)
 	{
 		*lst = new;
 		return ;
 	}
-	if (!new)
-		return ;
-	while ((*lst)->next)
-		lst = &(*lst)->next;
-	(*lst)->next = new;
+	(ft_lstlast(*lst))->next = new;
 }

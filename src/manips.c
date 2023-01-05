@@ -6,38 +6,68 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:03:44 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/03 16:50:25 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/05 14:00:17 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
 
-void	swap(t_list *lst)
+void	swap(t_list **lst)
 {
-	void *temp;
+	t_list *temp;
 
-	temp = lst->content;
-	lst->content = lst->next->content;
-	lst->next->content = temp;
-}
-
-void	push(t_list **take, t_list **to)
-{
-	// void *temp;
-
-	if (!*take)
+	if (!lst)
+		exit (-1);
+	if (!*lst)
 		return ;
-	ft_lstadd_back(to, *take);
-	*take = (*take)->next;
-	(*to)->next = 0;
+	if (!(*lst)->next)
+		return ;
+	temp = (*lst)->next;
+	(*lst)->next = temp->next;
+	ft_lstadd_front(lst, temp);
 }
 
-// void	rotate(t_list *lst)
-// {
+void	push(t_list **from, t_list **to)
+{
+	t_list *temp;
 
-// }
+	if (!from || !to)
+		exit (-1);
+	if (!*from)
+		return ;
+	temp = *from;
+	*from = (*from)->next;
+	ft_lstadd_front(to, temp);
+}
 
-// void	r_rotate(t_list *lst)
-// {
+void	rotate(t_list **lst)
+{
+	t_list *temp;
 
-// }
+	if (!lst)
+		exit (-1);
+	if (!*lst)
+		return ;
+	temp = *lst;
+	*lst = (*lst)->next;
+	ft_lstadd_back(lst, temp);
+}
+
+void	r_rotate(t_list **lst)
+{
+	t_list *temp;
+	t_list *newlast;
+
+	if (!lst)
+		exit (-1);
+	if (!*lst)
+		return ;
+	if (!(*lst)->next)
+		return ;
+	newlast = *lst;
+	while (newlast->next->next)
+		newlast = newlast->next;
+	temp = newlast->next;
+	newlast->next = NULL;
+	ft_lstadd_front(lst, temp);
+}
