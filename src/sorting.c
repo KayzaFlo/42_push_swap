@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 15:50:28 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/17 17:00:03 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/17 17:13:55 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,13 +206,11 @@ void	better_sort(t_list **stack_a, t_list **stack_b)
 			choosefun(stack_a, stack_b, "ra");
 		return ;
 	}
-	if (!sort)
-	{
-		if (!*stack_b)
-			return ;
-	}
-	choosefun(stack_a, stack_b, "sa");
-	return ;
+	if (sort == -1)
+		choosefun(stack_a, stack_b, "sa");
+	if (!*stack_b)
+		return ;
+		
 }
 
 void	sort(t_list *stack_a, t_list *stack_b)
