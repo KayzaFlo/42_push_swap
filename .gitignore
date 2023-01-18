@@ -1,4 +1,5 @@
 .vscode
+push_swap_visualizer
 
 *.DS_Store
 *.out
