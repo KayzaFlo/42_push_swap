@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 15:50:28 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/18 15:29:07 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/23 13:51:26 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,63 +56,6 @@ static void	choosefun(t_list **a, t_list **b, char *f)
 		}
 	}
 	// better_sort(a, b);
-}
-
-// int	is_sorted(t_list *lst)
-// {
-// 	int	a;
-//
-// 	if (!lst)
-// 		return (0);
-// 	a = *(int *)lst->content;
-// 	while (lst->next)
-// 	{
-// 		if (a > *(int *)(lst->next->content))
-// 			return (0);
-// 		lst = lst->next;
-// 		a = *(int *)lst->content;
-// 	}
-// 	return (1);
-// }
-
-int	sorted_at(t_list *lst)
-{
-	int		i;
-	int		ret;
-	int		a;
-	int		first;
-	t_list	*cur;
-
-	if (!lst)
-		return (0);
-	cur = lst;
-	i = 0;
-	ret = 0;
-	a = *(int *)cur->content;
-	first = a;
-	while (cur->next)
-	{
-		if (a > *(int *)(cur->next->content))
-		{
-			if (*(int *)cur->next->content > first || ret)
-				return (-1);
-			else if (*(int *)cur->next->content == first)
-				return (i);
-			first = *(int *)cur->next->content;
-			cur = cur->next;
-			a = *(int *)cur->content;
-			ret = i + 1;
-			// i = 0;
-			continue ;
-			// return (0);
-		}
-		cur = cur->next;
-		a = *(int *)cur->content;
-		i++;
-	}
-	if (*(int *)cur->content > *(int *)lst->content && ret)
-		return (-1);
-	return (ret);
 }
 
 // static void	sorting(t_list **stack_a, t_list **stack_b)
@@ -168,7 +111,7 @@ int	sorted_at(t_list *lst)
 // {
 // 	int		sort;
 // 	int		size;
-
+//
 // 	size = ft_lstsize(*stack_a);
 // 	if (size > 3)
 // 			choosefun(stack_a, stack_b, "pb");
@@ -187,71 +130,48 @@ int	sorted_at(t_list *lst)
 // 		choosefun(stack_a, stack_b, "sa");
 // 	if (!*stack_b)
 // 		return ;
-		
+//
 // }
-
-int	put_after(t_list *lst, int a)
-{
-	int	min;
-	int	max;
-
-	min = *(int *)lst->content;
-	max = *(int *)lst->content;
-	while (lst->next)
-	{
-		if (*(int *)lst->content < min)
-			min = *(int *)lst->content;
-		if (*(int *)lst->next->content > max)
-			max = *(int *)lst->next->content;
-		// printf ("HUH\n");
-		if (*(int *)lst->content < a && *(int *)lst->next->content > a)
-// {			printf("%d\n", *(int *)lst->content);
-		return (*(int *)lst->content);
-// }
-		lst = lst->next;
-	}
-	return (max);
-}
-
-int	get_index(t_list *lst, int a)
-{
-	int i = 0;
-
-	while (*(int *)lst->content != a)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
-}
 
 void	sort(t_list *stack_a, t_list *stack_b)
 {
 	int	ind;
 	// better_sort(&stack_a, &stack_b);
 
-	while (sorted_at(stack_a) == -1)
+	while (is_sorted_at(stack_a) == -1)
 	{
-		if (ft_lstsize(stack_a) > 3)
+		if (*(int *)stack_a->content > *(int *)stack_a->next->content)
+			choosefun(&stack_a, &stack_b, "sa");
+		else if (ft_lstsize(stack_a) > 3)
 			choosefun(&stack_a, &stack_b, "pb");
 		else
 			choosefun(&stack_a, &stack_b, "sa");
 	}
 	while (stack_b)
 	{
-		ind = get_index(stack_a, put_after(stack_a, *(int *)stack_b->content));
-		// printf ("HUH %d\n", ind);
-		if (ind + 1 > ft_lstsize(stack_a) / 2)
-			while (++ind < ft_lstsize(stack_a))
+		ind = lst_getind(stack_a, put_after(stack_a, *(int *)stack_b->content));
+		// printf("put_after:%d, ind:%d\n", put_after(stack_a, *(int *)stack_b->content), ind);
+		if (ind >= ft_lstsize(stack_a) / 2)
+		{
+			while (ind < ft_lstsize(stack_a) - 1)
+			{
 				choosefun(&stack_a, &stack_b, "rra");
+				ind++;
+			}
+		}
 		else
-			while (--ind >= 0)
+		{
+			while (ind >= 0)
+			{
 				choosefun(&stack_a, &stack_b, "ra");
+				ind--;
+			}
+		}
 		choosefun(&stack_a, &stack_b, "pa");
 	}
-	while (sorted_at(stack_a) > 0)
+	while (is_sorted_at(stack_a) > 0)
 	{
-		if (sorted_at(stack_a) > ft_lstsize(stack_a) / 2)
+		if (is_sorted_at(stack_a) > ft_lstsize(stack_a) / 2)
 			choosefun(&stack_a, &stack_b, "rra");
 		else
 			choosefun(&stack_a, &stack_b, "ra");
