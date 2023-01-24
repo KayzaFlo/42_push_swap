@@ -6,15 +6,40 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 15:50:28 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/24 14:21:21 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/24 15:39:46 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
 
+int	is_in_chunk(int n, t_list *lst_a, t_list *lst_b)
+{
+	int	count;
+	int	div;
+	int	size;
+
+	count = 0;
+	div = 20;
+	size = ft_lstsize(lst_a) + ft_lstsize(lst_b);
+	while (lst_a)
+	{
+		if (*(int *)lst_a->content < n)
+			count++;
+		lst_a = lst_a->next;
+	}
+	while (lst_b)
+	{
+		if (*(int *)lst_b->content < n)
+			count++;
+		lst_b = lst_b->next;
+	}
+	return((size - count) / div);
+}
+
 void	complexe_sort(t_stack *stack_a, t_stack *stack_b)
 {
-	static int	limit = 100;
+	// static int	limit = 30;
+	static int	chunk = 0;
 	t_list	*lst;
 	int		hold_fst;
 	int		hold_snd;
@@ -24,7 +49,7 @@ void	complexe_sort(t_stack *stack_a, t_stack *stack_b)
 //PUSH STACK FROM A TO B
 	hold_fst = 0;
 	hold_snd = 0;
-	subdiv = 28;
+	subdiv = 20;
 	while (hold_fst != -1)
 	{
 		lst = stack_a->lst;
@@ -33,7 +58,8 @@ void	complexe_sort(t_stack *stack_a, t_stack *stack_b)
 		i = 0;
 		while (lst)
 		{
-			if (*(int *)lst->content > limit - subdiv && *(int *)lst->content <= limit)
+			// if (*(int *)lst->content > limit - subdiv && *(int *)lst->content <= limit)
+			if (is_in_chunk(*(int *)lst->content, stack_a->lst, stack_b->lst) == chunk)
 			{
 				if (hold_fst == -1)
 					hold_fst = i;
@@ -59,11 +85,20 @@ void	complexe_sort(t_stack *stack_a, t_stack *stack_b)
 		push(stack_a, stack_b);
 	}
 // REPOSITIONNE
-	if (limit + 1 < ft_lstsize(stack_a->lst))
-	while (*(int *)stack_a->lst->content != limit + 1)
+	// if (limit + 1 < ft_lstsize(stack_a->lst))
+	if (chunk > 0)
+	// while (*(int *)stack_a->lst->content != limit + 1)
+	{while (is_in_chunk(*(int *)stack_a->lst->content, stack_a->lst, stack_b->lst) != chunk - 1)
 	{
-		rotate(stack_a);
+		//printf("BLEHBLEHBLEHBLEH\n");
+		r_rotate(stack_a);
 	}
+	while (is_in_chunk(*(int *)stack_a->lst->content, stack_a->lst, stack_b->lst) == chunk - 1)
+	{
+		//printf("BLEHBLEHBLEHBLEH\n");
+		r_rotate(stack_a);
+	}
+		rotate(stack_a);}
 //PUSH STACK BACK FROM B TO A
 	int	min;
 	int	max;
@@ -111,9 +146,12 @@ void	complexe_sort(t_stack *stack_a, t_stack *stack_b)
 			rotate(stack_a);
 	}
 //REBOOT AND TRY AGAIN
-	limit -= subdiv;
-	if (limit > 0)
+	chunk++;
+	if (chunk * 20 < ft_lstsize(stack_a->lst))
 		complexe_sort(stack_a, stack_b);
+	// limit -= subdiv;
+	// if (limit > 0)
+	// 	complexe_sort(stack_a, stack_b);
 }
 
 void	small_sort(t_stack *stack_a, t_stack *stack_b)
