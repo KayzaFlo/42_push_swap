@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:43:24 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/18 13:47:03 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/24 12:16:28 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	sorted_at(t_list *lst);
 
 int	main(int argc, char const *argv[])
 {
-	t_list	*stack_a;
-	t_list	*stack_b;
+	t_stack	stack_a;
+	t_stack	stack_b;
 	char	**args;
 	int		i;
 	int		*n;
@@ -31,7 +31,7 @@ int	main(int argc, char const *argv[])
 		args = ft_split(argv[1], ' ');
 	else
 		args = (char **)argv + 1;
-	stack_b = 0;
+	stack_b.lst = 0;
 	i = -1;
 	while (args[++i])
 	{
@@ -41,10 +41,12 @@ int	main(int argc, char const *argv[])
 		*n = ft_atoi(args[i]);
 		if (argc == 2)
 			free(args[i]);
-		ft_lstadd_back(&stack_a, ft_lstnew((void *)n));
+		ft_lstadd_back(&stack_a.lst, ft_lstnew((void *)n));
 	}
 	if (argc == 2)
 		free(args);
+		stack_a.c = 'a';
+		stack_b.c = 'b';
 	// printf("sorted? %d\n", sorted_at(stack_a));
-	sort(stack_a, stack_b);
+	sort(&stack_a, &stack_b);
 }

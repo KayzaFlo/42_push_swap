@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:00:45 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/23 13:28:10 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/24 14:48:00 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,28 @@ int	put_after(t_list *lst, int a)
 {
 	int	max;
 	int	below;
+	int	bool;
 
-	max = -1;
-	below = -1;
+	max = *(int *)lst->content;
+	below = *(int *)lst->content;
+	bool = 0;
+	// max = -1;
+	// below = -1;
 	while (lst)
 	{
 		if (*(int *)lst->content > max)
 			max = *(int *)lst->content;
-		if (*(int *)lst->content > below && *(int *)lst->content < a)
+		if ((*(int *)lst->content > below || below > a) && *(int *)lst->content < a)
+		{
 			below = *(int *)lst->content;
+			bool = 1;
+		}
 		if (lst->next)
 			if (*(int *)lst->content < a && *(int *)lst->next->content > a)
 				return (*(int *)lst->content);
 		lst = lst->next;
 	}
-	if (below >= 0)
+	if (bool)
 		return (below);
 	else
 		return (max);
