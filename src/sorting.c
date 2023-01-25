@@ -6,20 +6,29 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 15:50:28 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/24 15:39:46 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/25 17:41:52 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
 
-int	is_in_chunk(int n, t_list *lst_a, t_list *lst_b)
+static void	rotate_to_nearest(t_stack *stack, int from_start, int from_end)
+{
+	if (lst_getind(stack->lst, from_start) <
+		ft_lstsize(stack->lst) - lst_getind(stack->lst, from_end))
+			while(lst_getind(stack->lst, from_start) > 0)
+				rotate(stack);
+		else
+			while (lst_getind(stack->lst, from_end) > 0)
+				r_rotate(stack);
+}
+
+int	is_in_chunk(int n, t_list *lst_a, t_list *lst_b, int chunk_size)
 {
 	int	count;
-	int	div;
 	int	size;
 
 	count = 0;
-	div = 20;
 	size = ft_lstsize(lst_a) + ft_lstsize(lst_b);
 	while (lst_a)
 	{
@@ -33,23 +42,26 @@ int	is_in_chunk(int n, t_list *lst_a, t_list *lst_b)
 			count++;
 		lst_b = lst_b->next;
 	}
-	return((size - count) / div);
+	return((size - 1 - count) / chunk_size);
 }
 
 void	complexe_sort(t_stack *stack_a, t_stack *stack_b)
 {
-	// static int	limit = 30;
 	static int	chunk = 0;
+	static int	repos = 0;
 	t_list	*lst;
 	int		hold_fst;
 	int		hold_snd;
 	int		i;
-	int		subdiv;
+	int		chunk_size;
+	int	min;
+	int	max;
 
 //PUSH STACK FROM A TO B
 	hold_fst = 0;
 	hold_snd = 0;
-	subdiv = 20;
+	chunk_size = (ft_lstsize(stack_a->lst) + ft_lstsize(stack_b->lst)) /
+		((ft_lstsize(stack_a->lst) + ft_lstsize(stack_b->lst)) / 34 + 1); //~34 pour 100, ~75 pour 500
 	while (hold_fst != -1)
 	{
 		lst = stack_a->lst;
@@ -58,100 +70,57 @@ void	complexe_sort(t_stack *stack_a, t_stack *stack_b)
 		i = 0;
 		while (lst)
 		{
-			// if (*(int *)lst->content > limit - subdiv && *(int *)lst->content <= limit)
-			if (is_in_chunk(*(int *)lst->content, stack_a->lst, stack_b->lst) == chunk)
+			if (is_in_chunk(*(int *)lst->content, stack_a->lst, stack_b->lst, chunk_size) == chunk)
 			{
 				if (hold_fst == -1)
+				{
 					hold_fst = i;
+					min = *(int *)lst->content;
+				}
 				hold_snd = i;
+				max = *(int *)lst->content;
 			}
 			i++;
 			lst = lst->next;
 		}
 		if (hold_fst == -1)
 			break ;
-		if (hold_fst < ft_lstsize(stack_a->lst) - hold_snd)
-			while (hold_fst > 0)
-			{
-				rotate(stack_a);
-				hold_fst--;
-			}
-		else
-			while (hold_snd < ft_lstsize(stack_a->lst))
-			{
-				r_rotate(stack_a);
-				hold_snd++;
-			}
+		rotate_to_nearest(stack_a, min, max);
 		push(stack_a, stack_b);
 	}
 // REPOSITIONNE
-	// if (limit + 1 < ft_lstsize(stack_a->lst))
 	if (chunk > 0)
-	// while (*(int *)stack_a->lst->content != limit + 1)
-	{while (is_in_chunk(*(int *)stack_a->lst->content, stack_a->lst, stack_b->lst) != chunk - 1)
-	{
-		//printf("BLEHBLEHBLEHBLEH\n");
-		r_rotate(stack_a);
-	}
-	while (is_in_chunk(*(int *)stack_a->lst->content, stack_a->lst, stack_b->lst) == chunk - 1)
-	{
-		//printf("BLEHBLEHBLEHBLEH\n");
-		r_rotate(stack_a);
-	}
-		rotate(stack_a);}
+		rotate_to_nearest(stack_a, repos, repos);
+	if (chunk == 0)
+		repos = *(int *)stack_b->lst->content;
 //PUSH STACK BACK FROM B TO A
-	int	min;
-	int	max;
 	while (stack_b->lst)
 	{
 		lst = stack_b->lst;
-		min = 9999;
-		max = 0;
-		hold_fst = -1;
-		hold_snd = -1;
-		i = 0;
+		min = *(int *)lst->content;
+		max = *(int *)lst->content;
 		while (lst)
 		{
 			if (*(int *)lst->content < min)
-			{
 				min = *(int *)lst->content;
-				hold_fst = i;
-			}
 			if (*(int *)lst->content > max)
-			{
 				max = *(int *)lst->content;
-				hold_snd = i;
-			}
-			i++;
 			lst = lst->next;
 		}
-		if (hold_fst < ft_lstsize(stack_b->lst) - hold_snd)
-		{
-			while (hold_fst > 0)
-			{
-				rotate(stack_b);
-				hold_fst--;
-			}
-		}
+		if (lst_getind(stack_b->lst, min) < lst_getind(stack_b->lst, max))
+			rotate_to_nearest(stack_b, min, max);
 		else
-		{
-			while (hold_snd < ft_lstsize(stack_b->lst))
-			{
-				r_rotate(stack_b);
-				hold_snd++;
-			}
-		}
+			rotate_to_nearest(stack_b, max, min);
+		if (*(int *)stack_b->lst->content < repos)
+			repos = *(int *)stack_b->lst->content;
 		push(stack_b, stack_a);
 		if (*(int *)stack_a->lst->content == min)
 			rotate(stack_a);
 	}
 //REBOOT AND TRY AGAIN
 	chunk++;
-	if (chunk * 20 < ft_lstsize(stack_a->lst))
+	if (chunk * chunk_size < ft_lstsize(stack_a->lst))
 		complexe_sort(stack_a, stack_b);
-	// limit -= subdiv;
-	// if (limit > 0)
-	// 	complexe_sort(stack_a, stack_b);
 }
 
 void	small_sort(t_stack *stack_a, t_stack *stack_b)
