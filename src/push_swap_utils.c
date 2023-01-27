@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:03:44 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/24 12:43:37 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/27 11:29:04 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,18 @@ void	swap(t_stack *stack)
 	printf("s%c\n", stack->c);
 }
 
-void	push(t_stack *from, t_stack *to)
+void	push(t_stack *stack)
 {
 	t_list	*temp;
 
-	if (!from || !to)
+	if (!stack->twin || !stack)
 		exit (-1);
-	if (!from->lst)
+	if (!stack->twin->lst)
 		return ;
-	temp = from->lst;
-	from->lst = from->lst->next;
-	ft_lstadd_front(&to->lst, temp);
-	printf("p%c\n", to->c);
+	temp = stack->twin->lst;
+	stack->twin->lst = stack->twin->lst->next;
+	ft_lstadd_front(&stack->lst, temp);
+	printf("p%c\n", stack->c);
 }
 
 void	rotate(t_stack *stack)

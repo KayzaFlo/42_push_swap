@@ -6,83 +6,105 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:00:45 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/24 14:48:00 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/27 13:21:02 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
 
+static int	lst_getind(t_list *lst, int a)
+{
+	int	i;
+
+	i = 0;
+	while (lst)
+	{
+		if (*(int *)lst->content == a)
+			return (i);
+		lst = lst->next;
+		i++;
+	}
+	return (-1);
+}
+
+void	smart_rotate(t_stack *stack, int min, int max)
+{
+	int	from_start;
+	int	from_end;
+
+	if (lst_getind(stack->lst, min) < lst_getind(stack->lst, max))
+	{
+		from_start = min;
+		from_end = max;
+	}
+	else
+	{
+		from_start = max;
+		from_end = min;
+	}
+	if (lst_getind(stack->lst, from_start)
+		< ft_lstsize(stack->lst) - lst_getind(stack->lst, from_end))
+		while (lst_getind(stack->lst, from_start) > 0)
+			rotate(stack);
+	else
+		while (lst_getind(stack->lst, from_end) > 0)
+			r_rotate(stack);
+}
+
 int	is_sorted_at(t_list *lst)
 {
 	t_list	*cur;
 	int		ind;
-	int		fst_ind;
-	int		fst_nb;
+	int		n;
 
 	if (!lst)
 		return (0);
 	cur = lst;
 	ind = 0;
-	fst_ind = 0;
-	fst_nb = *(int *)cur->content;
+	n = *(int *)cur->content;
 	while (cur->next)
 	{
 		if (*(int *)cur->content > *(int *)(cur->next->content))
 		{
-			if (*(int *)cur->next->content > fst_nb || fst_ind)
+			if (*(int *)cur->next->content > n || lst_getind(lst, n) > 0)
 				return (-1);
-			else if (*(int *)cur->next->content == fst_nb)
+			else if (*(int *)cur->next->content == n)
 				return (ind);
-			fst_nb = *(int *)cur->next->content;
-			fst_ind = ind + 1;
+			n = *(int *)cur->next->content;
 		}
 		cur = cur->next;
 		ind++;
 	}
-	if (*(int *)cur->content > *(int *)lst->content && fst_ind)
+	if (*(int *)cur->content > *(int *)lst->content && lst_getind(lst, n) > 0)
 		return (-1);
-	return (fst_ind);
+	return (lst_getind(lst, n));
 }
 
-int	put_after(t_list *lst, int a)
+int	put_before(t_list *lst, int a)
 {
-	int	max;
-	int	below;
+	int	min;
+	int	just_above;
 	int	bool;
 
-	max = *(int *)lst->content;
-	below = *(int *)lst->content;
+	min = *(int *)lst->content;
+	just_above = a;
 	bool = 0;
-	// max = -1;
-	// below = -1;
 	while (lst)
 	{
-		if (*(int *)lst->content > max)
-			max = *(int *)lst->content;
-		if ((*(int *)lst->content > below || below > a) && *(int *)lst->content < a)
+		if (*(int *)lst->content < min)
+			min = *(int *)lst->content;
+		if ((*(int *)lst->content < just_above || just_above <= a)
+			&& *(int *)lst->content > a)
 		{
-			below = *(int *)lst->content;
+			just_above = *(int *)lst->content;
 			bool = 1;
 		}
 		if (lst->next)
 			if (*(int *)lst->content < a && *(int *)lst->next->content > a)
-				return (*(int *)lst->content);
+				return (*(int *)lst->next->content);
 		lst = lst->next;
 	}
 	if (bool)
-		return (below);
-	else
-		return (max);
-}
-
-int	lst_getind(t_list *lst, int a)
-{
-	int i = 0;
-
-	while (*(int *)lst->content != a)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
+		return (just_above);
+	return (min);
 }

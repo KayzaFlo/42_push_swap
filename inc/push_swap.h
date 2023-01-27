@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:14:22 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/24 12:11:38 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/27 13:00:29 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,20 @@
 
 typedef struct s_stack
 {
-	t_list	*lst;
-	char	c;
-} t_stack;
+	t_list			*lst;
+	char			c;
+	struct s_stack	*twin;
+}	t_stack;
 
-void	sort(t_stack *stack_a, t_stack *stack_b);
+void	complexe_sort(t_stack *stack_a, t_stack *stack_b);
+void	simple_sort(t_stack *stack_a, t_stack *stack_b);
 
+void	smart_rotate(t_stack *stack, int from_start, int from_end);
 int		is_sorted_at(t_list *lst);
-int		put_after(t_list *lst, int a);
-int		lst_getind(t_list *lst, int a);
+int		put_before(t_list *lst, int a);
 
 void	swap(t_stack *stack);
-void	push(t_stack *from, t_stack *to);
+void	push(t_stack *stack);
 void	rotate(t_stack *stack);
 void	r_rotate(t_stack *stack);
 
