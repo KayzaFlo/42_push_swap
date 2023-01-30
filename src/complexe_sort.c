@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 15:50:28 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/27 13:29:01 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/30 15:06:43 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,16 @@ static int	is_in_chunk(int n, t_stack *stack, int chunk_size)
 	return ((size - 1 - count) / chunk_size);
 }
 
-// 28l
+static void	minmax(t_list *lst, int *is_found, int *min, int *max)
+{
+	if (!*is_found)
+	{
+		*is_found = 1;
+		*min = *(int *)lst->content;
+	}
+	*max = *(int *)lst->content;
+}
+
 static void	prepare_chunk(t_stack *stack, int chunk, int chunk_size)
 {
 	t_list		*lst;
@@ -55,20 +64,13 @@ static void	prepare_chunk(t_stack *stack, int chunk, int chunk_size)
 		while (lst)
 		{
 			if (is_in_chunk(*(int *)lst->content, stack, chunk_size) == chunk)
-			{
-				if (!is_found)
-				{
-					is_found = 1;
-					min = *(int *)lst->content;
-				}
-				max = *(int *)lst->content;
-			}
+				minmax(lst, &is_found, &min, &max);
 			lst = lst->next;
 		}
 		if (!is_found)
 			break ;
 		smart_rotate(stack, min, max);
-		push(stack->twin);
+		print_call(stack->twin, push);
 	}
 }
 
@@ -94,13 +96,12 @@ static void	retreive_chunk(t_stack *stack_a, t_stack *stack_b, int *r)
 		smart_rotate(stack_b, min, max);
 		if (*(int *)stack_b->lst->content < *r)
 			*r = *(int *)stack_b->lst->content;
-		push(stack_a);
+		print_call(stack_a, push);
 		if (*(int *)stack_a->lst->content == min)
-			rotate(stack_a);
+			print_call(stack_a, rotate);
 	}
 }
 
-// chunk_size = 35; //~35 pour 100, ~76 pour 500 
 void	complexe_sort(t_stack *stack_a, t_stack *stack_b)
 {
 	static int	chunk = 0;
@@ -109,7 +110,7 @@ void	complexe_sort(t_stack *stack_a, t_stack *stack_b)
 	float		div;
 
 	div = sqrt(ft_lstsize(stack_a->lst)
-			+ ft_lstsize(stack_b->lst)) / 3.4f; ///HMMM
+			+ ft_lstsize(stack_b->lst)) / 3.4f;
 	if (div > 1)
 		chunk_size = (ft_lstsize(stack_a->lst)
 				+ ft_lstsize(stack_b->lst)) / div;

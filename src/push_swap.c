@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgeslin42 <fgeslin42@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:43:24 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/29 15:01:43 by fgeslin42        ###   ########.fr       */
+/*   Updated: 2023/01/30 13:53:12 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int argc, char const *argv[])
 
 	if (argc < 2)
 	{
-		ft_putstr_fd("Error\n", 2);
+		ft_putstr_fd("Error\n", STDERR_FILENO);
 		return (-1);
 	}
 	parse(&stack_a, argc, argv);
@@ -40,9 +40,9 @@ int	main(int argc, char const *argv[])
 	while (is_sorted_at(stack_a.lst) > 0)
 	{
 		if (is_sorted_at(stack_a.lst) > ft_lstsize(stack_a.lst) / 2)
-			r_rotate(&stack_a);
+			print_call(&stack_a, r_rotate);
 		else
-			rotate(&stack_a);
+			print_call(&stack_a, rotate);
 	}
 	ft_lstclear(&stack_a.lst, free);
 	ft_lstclear(&stack_b.lst, free);

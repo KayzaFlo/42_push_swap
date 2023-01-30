@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 13:00:45 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/27 13:21:02 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/30 11:49:32 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ void	smart_rotate(t_stack *stack, int min, int max)
 	if (lst_getind(stack->lst, from_start)
 		< ft_lstsize(stack->lst) - lst_getind(stack->lst, from_end))
 		while (lst_getind(stack->lst, from_start) > 0)
-			rotate(stack);
+			print_call(stack, rotate);
 	else
 		while (lst_getind(stack->lst, from_end) > 0)
-			r_rotate(stack);
+			print_call(stack, r_rotate);
 }
 
 int	is_sorted_at(t_list *lst)

@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fgeslin42 <fgeslin42@student.42.fr>        +#+  +:+       +#+         #
+#    By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/03 15:53:36 by fgeslin           #+#    #+#              #
-#    Updated: 2023/01/29 15:46:46 by fgeslin42        ###   ########.fr        #
+#    Updated: 2023/01/30 11:38:09 by fgeslin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #####	CONFIG		############################################################
 NAME		:= push_swap
-CHECKER		:= checker_custom
+CHECKER		:= checker
 LIBFT		:= libft/libft.a
 CC			:= gcc
 AR			:= ar -rcs
@@ -22,12 +22,12 @@ CFLAGS		= -Wall -Wextra -Werror
 #####	SOURCES		############################################################
 SRC			=	src/push_swap.c \
 				src/parsing.c \
-				src/push_swap_utils.c \
+				src/instructions.c \
 				src/simple_sort.c \
 				src/complexe_sort.c \
 				src/sorting_utils.c
-SRC_BONUS	=	checker/checker.c \
-				src/push_swap_utils.c \
+SRC_BONUS	=	bonus/checker.c \
+				src/instructions.c \
 				src/parsing.c
 OBJ			= $(SRC:.c=.o)
 OBJ_BONUS	= $(SRC_BONUS:.c=.o)
@@ -54,7 +54,7 @@ $(NAME): $(LIBFT) $(OBJ)
 
 bonus: $(LIBFT) $(OBJ_BONUS)
 	@ echo "$(GREEN)Compilation ${WHITE}of ${CYAN}$(NAME) ${WHITE}..."
-	@ $(CC) -o $(CHECKER) $(OBJ_BONUS) $(LIBFT) -lm
+	@ $(CC) -o $(CHECKER) $(OBJ_BONUS) $(LIBFT) -lm 
 	@ echo "$(CYAN)$(CHECKER) $(GREEN)created$(WHITE) ✔️"
 
 $(LIBFT):

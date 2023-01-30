@@ -1,16 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap_utils.c                                  :+:      :+:    :+:   */
+/*   instructions.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:03:44 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/27 11:29:04 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/30 11:48:41 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
+
+void	print_call(t_stack *stack, void f(t_stack *s))
+{
+	f(stack);
+	if (f == swap)
+		printf("s%c\n", stack->c);
+	else if (f == push)
+		printf("p%c\n", stack->c);
+	else if (f == rotate)
+		printf("r%c\n", stack->c);
+	else if (f == r_rotate)
+		printf("rr%c\n", stack->c);
+}
 
 void	swap(t_stack *stack)
 {
@@ -25,7 +38,6 @@ void	swap(t_stack *stack)
 	temp = stack->lst->next;
 	stack->lst->next = temp->next;
 	ft_lstadd_front(&stack->lst, temp);
-	printf("s%c\n", stack->c);
 }
 
 void	push(t_stack *stack)
@@ -39,7 +51,6 @@ void	push(t_stack *stack)
 	temp = stack->twin->lst;
 	stack->twin->lst = stack->twin->lst->next;
 	ft_lstadd_front(&stack->lst, temp);
-	printf("p%c\n", stack->c);
 }
 
 void	rotate(t_stack *stack)
@@ -53,7 +64,6 @@ void	rotate(t_stack *stack)
 	temp = stack->lst;
 	stack->lst = stack->lst->next;
 	ft_lstadd_back(&stack->lst, temp);
-	printf("r%c\n", stack->c);
 }
 
 void	r_rotate(t_stack *stack)
@@ -73,5 +83,4 @@ void	r_rotate(t_stack *stack)
 	temp = newlast->next;
 	newlast->next = NULL;
 	ft_lstadd_front(&stack->lst, temp);
-	printf("rr%c\n", stack->c);
 }

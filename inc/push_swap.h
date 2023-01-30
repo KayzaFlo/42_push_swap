@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgeslin42 <fgeslin42@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:14:22 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/29 15:02:08 by fgeslin42        ###   ########.fr       */
+/*   Updated: 2023/01/30 11:48:45 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	smart_rotate(t_stack *stack, int from_start, int from_end);
 int		is_sorted_at(t_list *lst);
 int		put_before(t_list *lst, int a);
 
+void	print_call(t_stack *stack, void f(t_stack *s));
 void	swap(t_stack *stack);
 void	push(t_stack *stack);
 void	rotate(t_stack *stack);

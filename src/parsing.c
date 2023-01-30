@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgeslin42 <fgeslin42@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:43:24 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/29 15:02:31 by fgeslin42        ###   ########.fr       */
+/*   Updated: 2023/01/30 14:20:52 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,71 @@
 
 static void	free_parse(char **strs_ptr, int i)
 {
+	while (strs_ptr[i])
+		i++;
 	while (--i >= 0)
 		free(strs_ptr[i]);
 	free(strs_ptr);
 }
 
+static void	check_dig(char **args, int i)
+{
+	int		j;
+
+	j = -1;
+	while (args[i][++j])
+	{
+		if (args[i][j] >= '0' && args[i][j] <= '9')
+			continue ;
+		if (args[i][j] == '-' && j == 0 && args[i][j + 1] != '\0')
+			continue ;
+		ft_putstr_fd("Error\n", STDERR_FILENO);
+		exit (-1);
+	}
+}
+
+static int	check_dup(char **args, int **n, t_stack *stack, int i)
+{
+	t_list	*lst;
+
+	lst = stack->lst;
+	*n = malloc(sizeof(int));
+	if (!*n)
+		return (1);
+	**n = ft_atoi(args[i]);
+	while (lst)
+	{
+		if (**n == *(int *)lst->content)
+			return (1);
+		lst = lst->next;
+	}
+	return (0);
+}
+
 void	parse(t_stack *stack_a, int argc, char const *argv[])
 {
 	char	**args;
+	int		arg;
 	int		i;
 	int		*n;
 
-	if (argc == 2)
-		args = ft_split(argv[1], ' ');
-	else
-		args = (char **)argv + 1;
-	i = -1;
-	while (args[++i])
+	arg = 0;
+	n = 0;
+	while (++arg < argc)
 	{
-		n = malloc(sizeof(int));
-		if (!n)
+		args = ft_split(argv[arg], ' ');
+		i = -1;
+		while (args[++i])
 		{
-			free_parse(args, i);
-			exit (-1);
+			check_dig(args, i);
+			if (check_dup(args, &n, stack_a, i))
+			{
+				ft_putstr_fd("Error\n", STDERR_FILENO);
+				free_parse(args, i);
+				exit (-1);
+			}
+			ft_lstadd_back(&stack_a->lst, ft_lstnew((void *)n));
 		}
-		*n = ft_atoi(args[i]);
-		ft_lstadd_back(&stack_a->lst, ft_lstnew((void *)n));
-	}
-	if (argc == 2)
 		free_parse(args, i);
+	}
 }
