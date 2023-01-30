@@ -3,15 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+         #
+#    By: fgeslin42 <fgeslin42@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/03 15:53:36 by fgeslin           #+#    #+#              #
-#    Updated: 2023/01/27 13:18:30 by fgeslin          ###   ########.fr        #
+#    Updated: 2023/01/29 15:46:46 by fgeslin42        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #####	CONFIG		############################################################
 NAME		:= push_swap
+CHECKER		:= checker_custom
 LIBFT		:= libft/libft.a
 CC			:= gcc
 AR			:= ar -rcs
@@ -20,11 +21,14 @@ CFLAGS		= -Wall -Wextra -Werror
 
 #####	SOURCES		############################################################
 SRC			=	src/push_swap.c \
+				src/parsing.c \
 				src/push_swap_utils.c \
 				src/simple_sort.c \
 				src/complexe_sort.c \
 				src/sorting_utils.c
-SRC_BONUS	=	
+SRC_BONUS	=	checker/checker.c \
+				src/push_swap_utils.c \
+				src/parsing.c
 OBJ			= $(SRC:.c=.o)
 OBJ_BONUS	= $(SRC_BONUS:.c=.o)
 
@@ -45,13 +49,13 @@ all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ)
 	@ echo "$(GREEN)Compilation ${WHITE}of ${CYAN}$(NAME) ${WHITE}..."
-	@ $(CC) -o $(NAME) $(OBJ) $(LIBFT) -lmlx -framework OpenGL -framework AppKit
+	@ $(CC) -o $(NAME) $(OBJ) $(LIBFT) -lm
 	@ echo "$(CYAN)$(NAME) $(GREEN)created$(WHITE) ✔️"
 
 bonus: $(LIBFT) $(OBJ_BONUS)
 	@ echo "$(GREEN)Compilation ${WHITE}of ${CYAN}$(NAME) ${WHITE}..."
-	@ $(CC) -o $(NAME) $(OBJ_BONUS) $(LIBFT) -lmlx -framework OpenGL -framework AppKit
-	@ echo "$(CYAN)$(NAME) $(GREEN)created$(WHITE) ✔️"
+	@ $(CC) -o $(CHECKER) $(OBJ_BONUS) $(LIBFT) -lm
+	@ echo "$(CYAN)$(CHECKER) $(GREEN)created$(WHITE) ✔️"
 
 $(LIBFT):
 	@ echo "$(GREEN)Compilation ${WHITE}of ${CYAN}${LIBFT} ${WHITE}..."
@@ -64,7 +68,7 @@ clean:
 	@ echo "$(RED)Deleting $(CYAN)$(NAME) $(WHITE)and $(CYAN)$(LIBFT) $(WHITE)objs ✔️"
 
 fclean: clean
-	@ ${RM} $(NAME)
+	@ ${RM} $(NAME) $(CHECKER)
 	@ $(MAKE) fclean -C libft/
 	@ echo "$(RED)Deleting $(CYAN)$(NAME) $(WHITE)and $(CYAN)$(LIBFT) $(WHITE)binary ✔️"
 

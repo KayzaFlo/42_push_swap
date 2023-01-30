@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+         #
+#    By: fgeslin42 <fgeslin42@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/18 13:25:46 by fgeslin           #+#    #+#              #
-#    Updated: 2023/01/03 14:35:01 by fgeslin          ###   ########.fr        #
+#    Updated: 2023/01/29 15:22:38 by fgeslin42        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRC			=	char/ft_isalnum.c \
 				str/ft_strlen.c \
 				str/ft_strmapi.c \
 				str/ft_strncmp.c \
+				str/ft_strnjoin.c \
 				str/ft_strnstr.c \
 				str/ft_strrchr.c \
 				str/ft_strtrim.c \

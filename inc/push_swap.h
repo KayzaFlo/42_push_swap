@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fgeslin42 <fgeslin42@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:14:22 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/27 13:00:29 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/29 15:02:08 by fgeslin42        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ typedef struct s_stack
 	char			c;
 	struct s_stack	*twin;
 }	t_stack;
+
+void	parse(t_stack *stack_a, int argc, char const *argv[]);
 
 void	complexe_sort(t_stack *stack_a, t_stack *stack_b);
 void	simple_sort(t_stack *stack_a, t_stack *stack_b);
