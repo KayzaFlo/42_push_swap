@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 14:36:10 by fgeslin42         #+#    #+#             */
-/*   Updated: 2023/01/30 13:30:35 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/30 16:24:16 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // "" && exit : arg NULL
 // "OK\n" : a sorted && b empty
 // "KO\n" : a !sorted || b !empty
-// "ERROR\n" : nan, int overflow, duplicate, wrong instruction
+// "ERROR\n" : nan, **int overflow**, duplicate, wrong instruction
 
 void	call(char **str_ptr, t_stack *stack, int *i, void f(t_stack *s))
 {
@@ -32,6 +32,11 @@ void	call(char **str_ptr, t_stack *stack, int *i, void f(t_stack *s))
 		f(stack);
 	else if (str[*i] == 'b')
 		f(stack->twin);
+	else if (str[*i] == str[(*i) - 1])
+	{
+		f(stack);
+		f(stack->twin);
+	}
 	else
 	{
 		ft_putstr_fd("Error\n", STDERR_FILENO);
@@ -47,13 +52,19 @@ void	pick_instruction(char **str, t_stack *stack, int *i)
 		call(str, stack, i, push);
 	else if ((*str)[*i] == 'r')
 	{
-		if ((*str)[(*i) + 1] != 'r')
-			call(str, stack, i, rotate);
-		else
+		if ((*str)[(*i) + 1] == 'r')
 		{
-			(*i)++;
-			call(str, stack, i, r_rotate);
+			if ((*str)[(*i) + 2] == 'a' || (*str)[(*i) + 2] == 'b'
+				|| (*str)[(*i) + 2] == 'r')
+			{
+				(*i)++;
+				call(str, stack, i, r_rotate);
+			}
+			else
+				call(str, stack, i, rotate);
 		}
+		else
+			call(str, stack, i, rotate);
 	}
 	else
 	{
@@ -68,7 +79,7 @@ void	apply_instructions(t_stack *stack)
 	int		i;
 
 	str = get_next_line(STDIN_FILENO);
-	while (str)
+	while (str && *str != '\n')
 	{
 		i = 0;
 		pick_instruction(&str, stack, &i);

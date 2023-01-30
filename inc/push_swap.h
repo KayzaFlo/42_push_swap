@@ -6,7 +6,7 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:14:22 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/30 11:48:45 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/30 16:27:29 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_stack
 }	t_stack;
 
 void	parse(t_stack *stack_a, int argc, char const *argv[]);
+int		atoi_overflow(const char *str);
 
 void	complexe_sort(t_stack *stack_a, t_stack *stack_b);
 void	simple_sort(t_stack *stack_a, t_stack *stack_b);

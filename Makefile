@@ -6,7 +6,7 @@
 #    By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/03 15:53:36 by fgeslin           #+#    #+#              #
-#    Updated: 2023/01/30 11:38:09 by fgeslin          ###   ########.fr        #
+#    Updated: 2023/01/30 15:47:56 by fgeslin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,13 +22,15 @@ CFLAGS		= -Wall -Wextra -Werror
 #####	SOURCES		############################################################
 SRC			=	src/push_swap.c \
 				src/parsing.c \
+				src/atoi_overflow.c \
 				src/instructions.c \
 				src/simple_sort.c \
 				src/complexe_sort.c \
 				src/sorting_utils.c
 SRC_BONUS	=	bonus/checker.c \
-				src/instructions.c \
-				src/parsing.c
+				src/parsing.c \
+				src/atoi_overflow.c \
+				src/instructions.c
 OBJ			= $(SRC:.c=.o)
 OBJ_BONUS	= $(SRC_BONUS:.c=.o)
 

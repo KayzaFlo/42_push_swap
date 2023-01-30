@@ -6,14 +6,17 @@
 /*   By: fgeslin <fgeslin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:43:24 by fgeslin           #+#    #+#             */
-/*   Updated: 2023/01/30 14:20:52 by fgeslin          ###   ########.fr       */
+/*   Updated: 2023/01/30 16:27:40 by fgeslin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
 
-static void	free_parse(char **strs_ptr, int i)
+static void	free_parse(char **strs_ptr)
 {
+	int	i;
+
+	i = 0;
 	while (strs_ptr[i])
 		i++;
 	while (--i >= 0)
@@ -45,7 +48,7 @@ static int	check_dup(char **args, int **n, t_stack *stack, int i)
 	*n = malloc(sizeof(int));
 	if (!*n)
 		return (1);
-	**n = ft_atoi(args[i]);
+	**n = atoi_overflow(args[i]);
 	while (lst)
 	{
 		if (**n == *(int *)lst->content)
@@ -74,11 +77,11 @@ void	parse(t_stack *stack_a, int argc, char const *argv[])
 			if (check_dup(args, &n, stack_a, i))
 			{
 				ft_putstr_fd("Error\n", STDERR_FILENO);
-				free_parse(args, i);
+				free_parse(args);
 				exit (-1);
 			}
 			ft_lstadd_back(&stack_a->lst, ft_lstnew((void *)n));
 		}
-		free_parse(args, i);
+		free_parse(args);
 	}
 }
